@@ -1,0 +1,57 @@
+version: '3'
+services:
+  location:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      DPSQL_HOSTNAME: psql
+      MONGODB_HOSTNAME: mongodb
+    restart: always
+    container_name: menus
+    image: jose737vijay/menus
+    networks:
+      -  first_network
+    depends_on:
+      - psql
+      - mongodb
+    links:
+      - mongodb
+
+
+  psql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    networks:
+      - first_network
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    container_name: psql
+
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongodgvol:/data/db mongo
+    container_name: mongodb
+    networks:
+      - first_network
+
+
+
+
+networks:
+  first_network:
+
+volumes:
+  postgres:
+  mongodgvol:
