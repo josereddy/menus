@@ -4,12 +4,31 @@ import com.example.MENUS.DTO.Remote_Put_location_Menus_Reservation_DTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
+
+
 @Service
 public class RemoteRequest {
+    @Value("${Remote.url_check}")
+    private String url_check;
+
+    @Value("${Remote.url_update_remote}")
+    private String url_update_remote;
+
+    @Value("${Remote.url_delete_remote}")
+    private String url_delete_remote;
+
+    @Value("${Remote.url_update}")
+    private String url_update;
+
+    @Value("${Remote.url_delete}")
+    private String url_delete;
+
 
 
     private static final Logger log = LogManager.getLogger(RemoteRequest.class.getName());
@@ -19,10 +38,11 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://${LOCATION_SERVER:localhost}:8081/locations/get/check_menus_location/"+url_data;
-        System.out.println(url);
+        url_check = url_check+url_data;
+//        String url = "http://${LOCATION_SERVER:localhost}:8081/locations/get/check_menus_location/"+url_data;
+//        System.out.println(url);
         HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
-        ResponseEntity<Integer> response_entity=restTemplate.exchange(url, HttpMethod.GET, requestEntity, Integer.class,1);
+        ResponseEntity<Integer> response_entity=restTemplate.exchange(url_check, HttpMethod.GET, requestEntity, Integer.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -35,10 +55,11 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_location_menus_reservation";
-        System.out.println(url);
+//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_location_menus_reservation";
+//        System.out.println(url);
+
         HttpEntity<Remote_Put_location_Menus_Reservation_DTO> requestEntity = new HttpEntity<>(data,headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Boolean.class);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update_remote, HttpMethod.PUT, requestEntity, Boolean.class);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -52,10 +73,11 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_menus_reservation/"+code;
-        System.out.println(url);
+//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_menus_reservation/"+code;
+//        System.out.println(url);
+        url_update = url_update+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Boolean.class);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update, HttpMethod.PUT, requestEntity, Boolean.class);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -74,10 +96,11 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_location_menus_reservation/"+code;
-        System.out.println(url);
+//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_location_menus_reservation/"+code;
+//        System.out.println(url);
+        url_delete_remote = url_delete_remote+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete_remote, HttpMethod.DELETE, requestEntity,Boolean.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -93,10 +116,11 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_menus_reservation/"+code;
-        System.out.println(url);
+//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_menus_reservation/"+code;
+//        System.out.println(url);
+        url_delete =url_delete+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete, HttpMethod.DELETE, requestEntity,Boolean.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();

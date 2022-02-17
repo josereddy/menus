@@ -15,6 +15,12 @@ spring:
     hibernate:
       ddl-auto: update
 
+Remote:
+  url_check: http://${LOCATION_SERVER:localhost}:8081/locations/get/check_menus_location/
+  url_update_remote: http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_location_menus_reservation
+  url_update: http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_menus_reservation/
+  url_delete_remote: http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_location_menus_reservation/
+  url_delete: http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_menus_reservation/
 
 server:
   port: 8082
