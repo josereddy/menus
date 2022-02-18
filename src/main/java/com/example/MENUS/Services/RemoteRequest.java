@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+//
 
 
 
@@ -38,11 +38,10 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-        url_check = url_check+url_data;
 //        String url = "http://${LOCATION_SERVER:localhost}:8081/locations/get/check_menus_location/"+url_data;
 //        System.out.println(url);
         HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
-        ResponseEntity<Integer> response_entity=restTemplate.exchange(url_check, HttpMethod.GET, requestEntity, Integer.class,1);
+        ResponseEntity<Integer> response_entity=restTemplate.exchange(url_check+url_data, HttpMethod.GET, requestEntity, Integer.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -75,9 +74,9 @@ public class RemoteRequest {
         RestTemplate restTemplate = new RestTemplate();
 //        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_menus_reservation/"+code;
 //        System.out.println(url);
-        url_update = url_update+code;
+//        url_update = url_update+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update, HttpMethod.PUT, requestEntity, Boolean.class);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update+code, HttpMethod.PUT, requestEntity, Boolean.class);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -98,9 +97,9 @@ public class RemoteRequest {
         RestTemplate restTemplate = new RestTemplate();
 //        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_location_menus_reservation/"+code;
 //        System.out.println(url);
-        url_delete_remote = url_delete_remote+code;
+//        url_delete_remote = url_delete_remote+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete_remote, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete_remote+code, HttpMethod.DELETE, requestEntity,Boolean.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
@@ -118,9 +117,9 @@ public class RemoteRequest {
         RestTemplate restTemplate = new RestTemplate();
 //        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_menus_reservation/"+code;
 //        System.out.println(url);
-        url_delete =url_delete+code;
+//        url_delete =url_delete+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete+code, HttpMethod.DELETE, requestEntity,Boolean.class,1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
         return  response_entity.getBody();
