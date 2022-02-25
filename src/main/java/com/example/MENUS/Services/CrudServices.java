@@ -31,26 +31,36 @@ import java.util.regex.Pattern;
 
 
 @Component
-@NoArgsConstructor
+//@NoArgsConstructor
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class CrudServices {
 
 
     private static final Logger log = LogManager.getLogger(CrudServices.class.getName());
 
 
+    CrudServices(Menus_Repository menus_repository,Interceptor_Repository interceptor_repository,
+                 Check_ConvertService check_convertService,RemoteRequest remote_request_service)
+    {
+        this.cc_service =check_convertService;
+        this.menus_repository = menus_repository;
+        this.interceptor_repository =interceptor_repository;
+        this.remote_request_service = remote_request_service;
+
+    }
+
     ///repositories
-    @Autowired
+//    @Autowired
     private Menus_Repository menus_repository;
-    @Autowired
+//    @Autowired
     private Interceptor_Repository interceptor_repository;
 
 
 //////services
-    @Autowired
+//    @Autowired
     private Check_ConvertService cc_service;
-    @Autowired
+//    @Autowired
     private RemoteRequest remote_request_service;
 
 
@@ -61,17 +71,17 @@ public class CrudServices {
 
 
     ///SAVE SERVICE
-    public boolean save_menu(Menus_Put_DTO menus_put_dto)
+    public boolean save_menu(Menus_Post_DTO menus_post_dto)
     {
 
         log.info("CRUD_SERVICE: Entered the AddMenu to database");
 
-        if (cc_service.check_menus_put_dto(menus_put_dto))
+        if (cc_service.check_menus_post_dto(menus_post_dto))
         {
             Integer remote_check_response=remote_request_service.remote_check_get_menus_location(
-                    menus_put_dto.getRestaurant_code()+"/"+menus_put_dto.getRestaurant_name());
+                    menus_post_dto.getRestaurant_code()+"/"+menus_post_dto.getRestaurant_name());
             if(remote_check_response==0)
-            menus_mdb = cc_service.DtoDocument_convert(menus_put_dto);
+            menus_mdb = cc_service.DtoDocument_convert(menus_post_dto);
             else
                 if(remote_check_response==1)
                     throw new UserNotFoundException("Restaurant code cannot be found use proper one look back location DB");
@@ -131,7 +141,7 @@ public class CrudServices {
 
         }
         else {
-            throw new NoFieldPresentException("Field:  "+search_field+" Not present please Select valid Field");
+            throw new NoFieldPresentException("Field:  "+search_field.get()+" Not present please Select valid Field");
         }
         if (menus_mdb == null) {
             throw new UserNotFoundException("Cannot find the requested data for the given value: "+value);
@@ -150,38 +160,33 @@ public class CrudServices {
 
 
     ////update Service
-    public boolean update_service_menus(Menus_Post_DTO menus_post_dto)
+    public boolean update_service_menus(Menus_Put_DTO menus_put_dto)
     {
 
         log.info("CRUD_SERVICE: Entered into Menu UPDATE SERVICE");
         Integer check_sum=0;
-        if(!(menus_repository.findById(menus_post_dto.getId()).isPresent()))
-            throw new UserNotFoundException("Menu with ID "+menus_post_dto.getId()+" not present");
-        Optional<Menus_MDB> menus_optional = menus_repository.findById(menus_post_dto.getId());
-        if((menus_optional.get().getRestaurantcode().equals(menus_post_dto.getRestaurant_code()))&&
-                (menus_optional.get().getRestaurantname().equals(menus_post_dto.getRestaurant_name()))) {
-            try {
-                menus_repository.findById(menus_post_dto.getId()).map(menu_record -> {
-                    menu_record.setRestaurantcode(menus_post_dto.getRestaurant_code());
-                    menu_record.setRestaurantname(menus_post_dto.getRestaurant_name());
-                    menu_record.setRestauranttype(menus_post_dto.getRestaurant_type());
-                    menu_record.setItems(menus_post_dto.getItems());
-                    menu_record.setOpenhours(menus_post_dto.getOpenhours());
+        if(!(menus_repository.findById(menus_put_dto.getId()).isPresent()))
+            throw new UserNotFoundException("Menu with ID "+menus_put_dto.getId()+" not present");
+        Optional<Menus_MDB> menus_optional = menus_repository.findById(menus_put_dto.getId());
+        if((menus_optional.get().getRestaurantcode().equals(menus_put_dto.getRestaurant_code()))&&
+                (menus_optional.get().getRestaurantname().equals(menus_put_dto.getRestaurant_name()))) {
+        //checking the open hours format
+            cc_service.check_open_hour_pattern(menus_put_dto.getOpenhours());
+  ///updating
+                  menus_repository.findById(menus_put_dto.getId()).map(menu_record -> {
+                    menu_record.setRestaurantcode(menus_put_dto.getRestaurant_code());
+                    menu_record.setRestaurantname(menus_put_dto.getRestaurant_name());
+                    menu_record.setRestauranttype(menus_put_dto.getRestaurant_type());
+                    menu_record.setItems(menus_put_dto.getItems());
+                    menu_record.setOpenhours(menus_put_dto.getOpenhours());
                     return menus_repository.save(menu_record);
                 });
-            } catch (DataIntegrityViolationException e) {
-                check_sum = 1;
-                throw new DuplicateLocationCodeFoundException("Menu code already existed please use another one");
-            } finally {
-                if (check_sum == 1)
-                    check_sum = 0;
-                else {
-                    if (!(remote_request_service.remote_put_menus_reservation(menus_post_dto.getRestaurant_code()))) {
+
+                  //updating the remote data
+                    if (!(remote_request_service.remote_put_menus_reservation(menus_put_dto.getRestaurant_code()))) {
                         log.info("remote updated from menus to reservation not happened successfully");
                         throw new UserNotFoundException("remote updated from menus to reservation not happened successfully");
                     }
-                }
-            }
         }
         else {
             throw new UnauthorisedException("U cannot able to modify restaurant name and code only way access location api to do it");

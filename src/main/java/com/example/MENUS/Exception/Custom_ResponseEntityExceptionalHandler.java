@@ -38,7 +38,7 @@ public class Custom_ResponseEntityExceptionalHandler extends ResponseEntityExcep
     }
 
     @ExceptionHandler(UserDataIncorrectFormatException.class)
-    public final ResponseEntity<Object> handleUserDataNotCorrect(UserNotFoundException ex, WebRequest request) {
+    public final ResponseEntity<Object> handleUserDataNotCorrect(UserDataIncorrectFormatException ex, WebRequest request) {
         log.error("Exception :UserDataIncorrectFormatException");
         ExceptionResponse er = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(er, HttpStatus.BAD_REQUEST);

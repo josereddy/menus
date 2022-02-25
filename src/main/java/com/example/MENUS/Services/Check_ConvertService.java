@@ -1,7 +1,7 @@
 package com.example.MENUS.Services;
 
 
-import com.example.MENUS.DTO.Menus_Put_DTO;
+import com.example.MENUS.DTO.Menus_Post_DTO;
 import com.example.MENUS.Document.Menus_MDB;
 import com.example.MENUS.Document.OpenHours;
 import com.example.MENUS.Exception.InvalidTimeFormatException;
@@ -30,7 +30,7 @@ public class Check_ConvertService {
 
     private static final Logger log = LogManager.getLogger(Check_ConvertService.class.getName());
 
-    private Menus_MDB menus;
+    private Menus_MDB menus_mdb;
     @Autowired
     private SequenceGeneratorService seq_service;
 
@@ -40,16 +40,16 @@ public class Check_ConvertService {
 //////////////////////////////////////checking valid data
 
 
-    public boolean check_menus_put_dto(Menus_Put_DTO menus_put_dto) {
+    public boolean check_menus_post_dto(Menus_Post_DTO menus_post_dto) {
         log.info("CHECK_CONVERT_SERVICE: Entered MENU Data check Service");
 
 
-        if (menus_put_dto.getRestaurant_code() == null || menus_put_dto.getRestaurant_name() == null ||
-                menus_put_dto.getItems() == null|| menus_put_dto.getOpenhours()==null||menus_put_dto.getRestaurant_type()==null)
+        if (menus_post_dto.getRestaurant_code() == null || menus_post_dto.getRestaurant_name() == null ||
+                menus_post_dto.getItems() == null|| menus_post_dto.getOpenhours()==null||menus_post_dto.getRestaurant_type()==null)
             return false;
-        if(check_open_hour_pattern(menus_put_dto.getOpenhours()))
+        if(check_open_hour_pattern(menus_post_dto.getOpenhours()))
         {
-            log.debug("CHECK_CONVERT_SERVICE: Successfully Exited MENU Data check Service");
+            log.info("CHECK_CONVERT_SERVICE: Successfully Exited MENU Data check Service");
             return true;
         }
         else return false;
@@ -60,6 +60,7 @@ public class Check_ConvertService {
 ///////checking valid open_hours
     public boolean check_open_hour_pattern(OpenHours openHours)
     {
+        log.info("CHECK_SERVICE:ENTERED INTO THE OPEN HOURS CHECKING SERVICE ");
         String pattern="[0-2][0-9](\\:)[03][0](\\-)[0-2][0-9](\\:)[03][0]";
         List<String> dayhours = new ArrayList();
         dayhours.add(openHours.getSunday());
@@ -115,18 +116,18 @@ public class Check_ConvertService {
 
     ////////////////////////////////Dto Document converter
 
-    public Menus_MDB DtoDocument_convert(Menus_Put_DTO menus_put_dto) {
+    public Menus_MDB DtoDocument_convert(Menus_Post_DTO menus_put_dto) {
         log.info("CHECK_CONVERT_SERVICE: Entered INTO DATA TO ENTITY Conversion SERVICE");
-        menus = new Menus_MDB();
-        menus.setId(seq_service.generateSequence(Menus_MDB.SEQUENCE_NAME));
-        menus.setRestaurantcode(menus_put_dto.getRestaurant_code());
-        menus.setRestaurantname(menus_put_dto.getRestaurant_name());
-        menus.setRestauranttype(menus_put_dto.getRestaurant_type());
-        menus.setItems(menus_put_dto.getItems());
-        menus.setOpenhours(menus_put_dto.getOpenhours());
+        menus_mdb = new Menus_MDB();
+        menus_mdb.setId(seq_service.generateSequence(Menus_MDB.SEQUENCE_NAME));
+        menus_mdb.setRestaurantcode(menus_put_dto.getRestaurant_code());
+        menus_mdb.setRestaurantname(menus_put_dto.getRestaurant_name());
+        menus_mdb.setRestauranttype(menus_put_dto.getRestaurant_type());
+        menus_mdb.setItems(menus_put_dto.getItems());
+        menus_mdb.setOpenhours(menus_put_dto.getOpenhours());
         log.info("CHECK_CONVERT_SERVICE: EXITED FROM Location DATA to Entity Conversion Service");
 
-        return menus;
+        return menus_mdb;
 
     }
 

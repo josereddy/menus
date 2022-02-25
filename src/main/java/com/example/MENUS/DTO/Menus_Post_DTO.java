@@ -1,5 +1,6 @@
 package com.example.MENUS.DTO;
 
+
 import com.example.MENUS.Document.Items;
 import com.example.MENUS.Document.OpenHours;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Menus_Post_DTO {
-    public Menus_Post_DTO() {
 
-
+    public Menus_Post_DTO()
+    {
         final Logger log = LogManager.getLogger(Menus_Post_DTO.class.getName());
     }
 
-    private Long id;
+
     private String restaurant_code;
 
     private String restaurant_name;

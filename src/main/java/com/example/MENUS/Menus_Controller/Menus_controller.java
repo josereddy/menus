@@ -2,8 +2,8 @@ package com.example.MENUS.Menus_Controller;
 
 
 
-import com.example.MENUS.DTO.Menus_Put_DTO;
 import com.example.MENUS.DTO.Menus_Post_DTO;
+import com.example.MENUS.DTO.Menus_Put_DTO;
 import com.example.MENUS.DTO.Remote_Put_Location_Menus_DTO;
 import com.example.MENUS.DTO.Remote_Put_Reservation_Menus_DTO;
 import com.example.MENUS.Document.Menus_MDB;
@@ -72,7 +72,7 @@ public class Menus_controller {
     @Operation(summary = "[POST Menus DATA TO MONGO DB]", description = "New record wil be Added into the database locations")
     @SecurityRequirement(name = "check")
     @PostMapping("/post/add_menus")
-    public String add_menu(@RequestBody Menus_Put_DTO menu_data)
+    public String add_menu(@RequestBody Menus_Post_DTO menu_data)
     {
 
         log.info("REST CALL: ENTERED ADD MENU DATA ");
@@ -81,7 +81,7 @@ public class Menus_controller {
             log.debug("REST CALL: ADD MENU DATA Successfully EXITED ");
             return "MENU Data Successfully Added to DataBase";
         } else
-            throw new UserDataIncorrectFormatException("Location_Data is incorrect");
+            throw new UserDataIncorrectFormatException("Given Menus_Data is incorrect");
 
 
     }
@@ -113,7 +113,7 @@ public class Menus_controller {
     @Operation(summary = "[GET the record by field and value]", description = "Get the single record for given field and value ")
     @Parameter(name = "value", example = "1", required = true, description = "Field Value", in = ParameterIn.PATH)
     @Parameter(name = "search_field",required = false, description = "Search Field Name/default=id", in = ParameterIn.QUERY)
-    @GetMapping("/get/search_location/{value}")
+    @GetMapping("/get/search_menus/{value}")
     public MappingJacksonValue search_value(@PathVariable("value") String value, @RequestParam Optional<String> search_field) {
         log.info("REST API: Entered SEARCH Service");
         MappingJacksonValue menus_jackson = cr_service.find_value(value, search_field);
@@ -125,8 +125,8 @@ public class Menus_controller {
     /////////   Update location API
     @SecurityRequirement(name = "check")
     @Operation(summary = "[Update the record based on id]", description = "A new value for the particular value is appeared in Database ")
-    @PutMapping("/put/update_location")
-    public String update_menus(@RequestBody Menus_Post_DTO menus_post_dto) {
+    @PutMapping("/put/update_menus")
+    public String update_menus(@RequestBody Menus_Put_DTO menus_post_dto) {
         log.info("REST API: Entered  Update Service");
         if(cr_service.update_service_menus(menus_post_dto))
         return "Data updated Successfully";
@@ -139,7 +139,7 @@ public class Menus_controller {
     @SecurityRequirement(name = "check")
     @Operation(summary = "[Delete the location record based on id]", description = "No more data available in the database with the chosen id")
     @Parameter(name = "id", example = "1", required = true, description = "Id VALUE", in = ParameterIn.PATH)
-    @DeleteMapping("/delete/delete_location/{id}")
+    @DeleteMapping("/delete/delete_menus/{id}")
     public String delete_location(@PathVariable("id") Long id) {
         log.info("REST API: Entered Deleted Location ");
         if (cr_service.delete_menus(id)) {
