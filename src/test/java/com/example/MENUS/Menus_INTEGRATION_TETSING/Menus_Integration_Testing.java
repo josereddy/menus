@@ -1,7 +1,6 @@
 package com.example.MENUS.Menus_INTEGRATION_TETSING;
 
 
-
 import com.example.MENUS.DTO.Menus_Post_DTO;
 import com.example.MENUS.DTO.Menus_Put_DTO;
 import com.example.MENUS.Document.Items;
@@ -53,7 +52,6 @@ public class Menus_Integration_Testing {
     private ObjectMapper objectMapper;
 
 
-
     ///repositories
     @Autowired
     private Menus_Repository menus_repository;
@@ -70,14 +68,14 @@ public class Menus_Integration_Testing {
     private RemoteRequest remoteRequest;
 
     private User_Data_DB user_data_db = new User_Data_DB();
-    private Menus_Post_DTO menus_post_dto =new Menus_Post_DTO();
-    private Menus_MDB menus_mdb =new Menus_MDB();
+    private Menus_Post_DTO menus_post_dto = new Menus_Post_DTO();
+    private Menus_MDB menus_mdb = new Menus_MDB();
 
     List<Items> items_list = new ArrayList<Items>();
 
     @BeforeEach
-    public void setup(){
-        items_list.add(new Items("Cicken","parrota"));
+    public void setup() {
+        items_list.add(new Items("Chicken", "parrota"));
         menus_repository.deleteAll();
         user_data_repository.deleteAll();
         //user_details
@@ -88,7 +86,7 @@ public class Menus_Integration_Testing {
         menus_post_dto.setRestaurant_code("usa-test-1000");
         menus_post_dto.setRestaurant_name("usa-test-chicken");
         menus_post_dto.setItems(items_list);
-        menus_post_dto.setOpenhours(new OpenHours("10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00"));
+        menus_post_dto.setOpenhours(new OpenHours("10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00"));
         menus_post_dto.setRestaurant_type("veg");
         ////////DB object
         menus_mdb.setId(seq_service.generateSequence(Menus_MDB.SEQUENCE_NAME));
@@ -122,7 +120,6 @@ public class Menus_Integration_Testing {
                 .andExpect(status().isOk()).andExpect(content().string(Expected));
 
 
-
     }
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -132,7 +129,7 @@ public class Menus_Integration_Testing {
     public void Menus_Post_test2() throws Exception {
 
         // given - precondition or setup
-        String Expected= "Given Menus_Data is incorrect";
+        String Expected = "Given Menus_Data is incorrect";
         given(remoteRequest.remote_check_get_menus_location(any(String.class))).willReturn(0);
         menus_post_dto.setItems(null);
         //         when - action or behaviour that we are going test
@@ -142,12 +139,10 @@ public class Menus_Integration_Testing {
 
         // then - verify the result or output using assert statements
         response.andDo(print())
-                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message",CoreMatchers.is(Expected)));
-
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message", CoreMatchers.is(Expected)));
 
 
     }
-
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -168,9 +163,8 @@ public class Menus_Integration_Testing {
 
         // then - verify the result or output using assert statements
         response.andDo(print())
-                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message",CoreMatchers.is(Expected)));
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message", CoreMatchers.is(Expected)));
     }
-
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -192,10 +186,8 @@ public class Menus_Integration_Testing {
 
         // then - verify the result or output using assert statements
         response.andDo(print())
-                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message",CoreMatchers.is(Expected)));
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message", CoreMatchers.is(Expected)));
     }
-
-
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -216,22 +208,13 @@ public class Menus_Integration_Testing {
 
         // then - verify the result or output using assert statements
         response.andDo(print())
-                .andExpect(status().isNotFound()).andExpect(jsonPath("$.message",CoreMatchers.is(Expected)));
+                .andExpect(status().isNotFound()).andExpect(jsonPath("$.message", CoreMatchers.is(Expected)));
     }
-
-
-
-
-
-
-
-
-
 
 
 /////////////// get
 
-   @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
+    @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("Get_MENUS TEST:1 default")
     @Test
     @Order(6)
@@ -241,8 +224,8 @@ public class Menus_Integration_Testing {
         List<Menus_MDB> list_menus_mdb = new ArrayList();
         list_menus_mdb.add(menus_mdb);
         list_menus_mdb.add(new Menus_MDB(seq_service.generateSequence(Menus_MDB.SEQUENCE_NAME),
-        "usa-test-1001","usa-burger-king","veg"
-                , items_list,menus_post_dto.getOpenhours()));
+                "usa-test-1001", "usa-burger-king", "veg"
+                , items_list, menus_post_dto.getOpenhours()));
         menus_repository.saveAll(list_menus_mdb);
         Integer size = 2, offset = 0, pageSize = 2;
 
@@ -257,8 +240,6 @@ public class Menus_Integration_Testing {
     }
 
 
-
-
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("Get_MENUS TEST:2 FILTER BY restaurantcode")
     @Test
@@ -269,13 +250,12 @@ public class Menus_Integration_Testing {
         List<Menus_MDB> list_menus_mdb = new ArrayList();
         list_menus_mdb.add(menus_mdb);
         list_menus_mdb.add(new Menus_MDB(seq_service.generateSequence(Menus_MDB.SEQUENCE_NAME),
-                "usa-test-1001","usa-burger-king","veg"
-                , items_list,menus_post_dto.getOpenhours()));
+                "usa-test-1001", "usa-burger-king", "veg"
+                , items_list, menus_post_dto.getOpenhours()));
         menus_repository.saveAll(list_menus_mdb);
         Integer size = 2, offset = 0, pageSize = 2;
         MultiValueMap<String, String> filter_fields = new LinkedMultiValueMap<>();
         filter_fields.add("filter_fields", "restaurantcode");
-
 
 
         // when - action or behaviour that we are going test
@@ -289,12 +269,6 @@ public class Menus_Integration_Testing {
     }
 
 
-
-
-
-
-
-
     ////////////////////get by field
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -305,10 +279,9 @@ public class Menus_Integration_Testing {
 
         // given - precondition or setup
         menus_repository.save(menus_mdb);
-        String value= String.valueOf(menus_mdb.getId());
+        String value = String.valueOf(menus_mdb.getId());
 //        MultiValueMap<String, String> filter_fields = new LinkedMultiValueMap<>();
 //        filter_fields.add("filter_fields", "restaurantcode");
-
 
 
         // when - action or behaviour that we are going test
@@ -317,10 +290,7 @@ public class Menus_Integration_Testing {
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.restaurantcode", CoreMatchers.is("usa-test-1000")));
-                    }
-
-
-
+    }
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
@@ -331,15 +301,14 @@ public class Menus_Integration_Testing {
 
         // given - precondition or setup
         menus_repository.save(menus_mdb);
-        String value= menus_mdb.getRestaurantcode();
+        String value = menus_mdb.getRestaurantcode();
         MultiValueMap<String, String> filter_fields = new LinkedMultiValueMap<>();
         filter_fields.add("filter_fields", "restaurantcode");
 
 
-
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(get("/menus/get/search_menus/{value}", value)
-                .params(filter_fields).param("search_field","restaurantcode"));
+                .params(filter_fields).param("search_field", "restaurantcode"));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isOk())
@@ -347,12 +316,11 @@ public class Menus_Integration_Testing {
     }
 
 
-
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
-    @DisplayName("Get_LOCATION_BY_FIELD_ TEST:3   EXCEPTION HANDLING VALUE NOT FOUND")
+    @DisplayName("Get_Menus_BY_FIELD_ TEST:3   EXCEPTION HANDLING VALUE NOT FOUND")
     @Test
     @Order(10)
-    public void Location_get_FIELD_TEST3() throws Exception {
+    public void Menus_get_FIELD_TEST3() throws Exception {
 
         // given - precondition or setup
         String value = "codenotpresent";
@@ -370,10 +338,10 @@ public class Menus_Integration_Testing {
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
-    @DisplayName("Get_LOCATION_BY_FIELD_ TEST:4   EXCEPTION HANDLING FIELD NOT FOUND")
+    @DisplayName("Get_Menus_BY_FIELD_ TEST:4   EXCEPTION HANDLING FIELD NOT FOUND")
     @Test
     @Order(11)
-    public void Location_get_BYFIELD_TEST4() throws Exception {
+    public void Menus_get_BYFIELD_TEST4() throws Exception {
 
         // given - precondition or setup
         String value = menus_mdb.getRestaurantcode();
@@ -389,23 +357,20 @@ public class Menus_Integration_Testing {
     }
 
 
-
-
-
 //    ///////////////update
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("PUT_MENU_TEST:1 default")
     @Test
     @Order(12)
-    public void Location_update_test() throws Exception {
+    public void Menus_update_test() throws Exception {
 
         // given - precondition or setup
 
         given(remoteRequest.remote_put_menus_reservation(any(String.class))).willReturn(true);
         menus_repository.save(menus_mdb);
 
-        Menus_Put_DTO  menus_put_dto =new  Menus_Put_DTO();
+        Menus_Put_DTO menus_put_dto = new Menus_Put_DTO();
         menus_put_dto.setId(menus_mdb.getId());
         menus_put_dto.setRestaurant_code(menus_mdb.getRestaurantcode());
         menus_put_dto.setRestaurant_name(menus_mdb.getRestaurantname());
@@ -425,22 +390,18 @@ public class Menus_Integration_Testing {
     }
 
 
-
-
-
-
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("PUT_MENU_TEST:2 EXCEPTION IF INVALID ID IS GIVEN")
     @Test
     @Order(13)
-    public void Location_update_test2() throws Exception {
+    public void Menus_update_test2() throws Exception {
 
         // given - precondition or setup
 
         given(remoteRequest.remote_put_menus_reservation(any(String.class))).willReturn(true);
         menus_repository.save(menus_mdb);
 
-        Menus_Put_DTO  menus_put_dto =new  Menus_Put_DTO();
+        Menus_Put_DTO menus_put_dto = new Menus_Put_DTO();
         menus_put_dto.setId(0l);
         menus_put_dto.setRestaurant_code(menus_mdb.getRestaurantcode());
         menus_put_dto.setRestaurant_name(menus_mdb.getRestaurantname());
@@ -448,30 +409,29 @@ public class Menus_Integration_Testing {
         menus_put_dto.setOpenhours(menus_mdb.getOpenhours());
         menus_put_dto.setItems(menus_mdb.getItems());
 
-        String expectedresult = "Menu with ID "+menus_put_dto.getId()+" not present";
+        String expectedresult = "Menu with ID " + menus_put_dto.getId() + " not present";
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/menus/put/update_menus")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(menus_put_dto)));
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message",CoreMatchers.is(expectedresult)));
+                .andExpect(jsonPath("$.message", CoreMatchers.is(expectedresult)));
     }
-
 
 
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("PUT_MENU_TEST:3 EXCEPTION IF TRYING TO MODIFY RESTUARANT CODE")
     @Test
     @Order(14)
-    public void Location_update_test3() throws Exception {
+    public void Menus_update_test3() throws Exception {
 
         // given - precondition or setup
 
         given(remoteRequest.remote_put_menus_reservation(any(String.class))).willReturn(true);
         menus_repository.save(menus_mdb);
 
-        Menus_Put_DTO  menus_put_dto =new  Menus_Put_DTO();
+        Menus_Put_DTO menus_put_dto = new Menus_Put_DTO();
         menus_put_dto.setId(menus_mdb.getId());
         menus_put_dto.setRestaurant_code("usa-121");
         menus_put_dto.setRestaurant_name(menus_mdb.getRestaurantname());
@@ -486,7 +446,7 @@ public class Menus_Integration_Testing {
                 .content(objectMapper.writeValueAsString(menus_put_dto)));
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message",CoreMatchers.is(expectedresult)));
+                .andExpect(jsonPath("$.message", CoreMatchers.is(expectedresult)));
     }
 
 
@@ -494,14 +454,14 @@ public class Menus_Integration_Testing {
     @DisplayName("PUT_MENU_TEST:4 EXCEPTION IF TRYING TO UPDATE WRONG TIME FORMAT")
     @Test
     @Order(15)
-    public void Location_update_test4() throws Exception {
+    public void Menus_update_test4() throws Exception {
 
         // given - precondition or setup
 
         given(remoteRequest.remote_put_menus_reservation(any(String.class))).willReturn(true);
         menus_repository.save(menus_mdb);
 
-        Menus_Put_DTO  menus_put_dto =new  Menus_Put_DTO();
+        Menus_Put_DTO menus_put_dto = new Menus_Put_DTO();
         menus_put_dto.setId(menus_mdb.getId());
         menus_put_dto.setRestaurant_code(menus_mdb.getRestaurantcode());
         menus_put_dto.setRestaurant_name(menus_mdb.getRestaurantname());
@@ -510,18 +470,14 @@ public class Menus_Integration_Testing {
         menus_put_dto.setOpenhours(new OpenHours("10:00-12:2220", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00"));
 
 
-
         String expectedresult = "Please check all time formats are 24hrs ex:00:00-23:30 and must be in a half hour time interval";
         ResultActions response = mockMvc.perform(put("/menus/put/update_menus")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(menus_put_dto)));
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message",CoreMatchers.is(expectedresult)));
+                .andExpect(jsonPath("$.message", CoreMatchers.is(expectedresult)));
     }
-
-
-
 
 
 //    //////////////delete
@@ -551,7 +507,6 @@ public class Menus_Integration_Testing {
     }
 
 
-
     @WithMockUser(username = "jose", password = "jose@", roles = "ADMIN")
     @DisplayName("DELETE_MENUS_RECORD_TEST:2 EXCEPTION IF RECORD NOT PRESENT ")
     @Test
@@ -573,12 +528,8 @@ public class Menus_Integration_Testing {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message",CoreMatchers.is(expectedresult)));
+                .andExpect(jsonPath("$.message", CoreMatchers.is(expectedresult)));
     }
-
-
-
-
 
 
 //    /////////////////////////api timings get methods
@@ -599,7 +550,7 @@ public class Menus_Integration_Testing {
         String Microservice = "MENUS";
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/menus/get/api_timing/{offset}/{pageSize}/{Microservice}", offset, pageSize,Microservice));
+        ResultActions response = mockMvc.perform(get("/menus/get/api_timing/{offset}/{pageSize}/{Microservice}", offset, pageSize, Microservice));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).andExpect(status().isOk())
@@ -607,10 +558,6 @@ public class Menus_Integration_Testing {
                 .andExpect(jsonPath("$.content[0].servicename", CoreMatchers.is("POST")))
                 .andExpect(jsonPath("$.content[1].url", CoreMatchers.is("add_menus")));
     }
-
-
-
-
 
 
 }

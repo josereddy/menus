@@ -16,5 +16,4 @@ public class Remote_Put_location_Menus_Reservation_DTO {
     private String updated_restaurant_name;
 
 
-
 }

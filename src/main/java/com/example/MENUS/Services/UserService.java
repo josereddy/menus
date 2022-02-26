@@ -1,7 +1,6 @@
 package com.example.MENUS.Services;
 
 
-
 import com.example.MENUS.Entity.User_Data_DB;
 import com.example.MENUS.Repository.User_Data_Repository;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
-
 @Service
 public class UserService implements UserDetailsService {
     private static final Logger log = LogManager.getLogger(UserService.class.getName());
@@ -23,9 +21,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username_get) throws UsernameNotFoundException {
-       log.info("USER SERVICE:Inside the load function to load the user name for security check");
+        log.info("USER SERVICE:Inside the load function to load the user name for security check");
 
-        user_data_db= user_data_repository.findByUsername(username_get);
+        user_data_db = user_data_repository.findByUsername(username_get);
         UserDetailsPrinciple user_details_principal = new UserDetailsPrinciple(user_data_db);
 
         log.debug("USER SERVICE:Exiting the load function to load the user name for security check");

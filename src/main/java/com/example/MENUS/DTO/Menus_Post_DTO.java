@@ -16,8 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Menus_Post_DTO {
 
-    public Menus_Post_DTO()
-    {
+    public Menus_Post_DTO() {
         final Logger log = LogManager.getLogger(Menus_Post_DTO.class.getName());
     }
 

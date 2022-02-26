@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-//
-
 
 
 @Service
@@ -30,7 +28,6 @@ public class RemoteRequest {
     private String url_delete;
 
 
-
     private static final Logger log = LogManager.getLogger(RemoteRequest.class.getName());
 
     public Integer remote_check_get_menus_location(String url_data) {
@@ -38,13 +35,12 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://${LOCATION_SERVER:localhost}:8081/locations/get/check_menus_location/"+url_data;
-//        System.out.println(url);
+
         HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
-        ResponseEntity<Integer> response_entity=restTemplate.exchange(url_check+url_data, HttpMethod.GET, requestEntity, Integer.class,1);
+        ResponseEntity<Integer> response_entity = restTemplate.exchange(url_check + url_data, HttpMethod.GET, requestEntity, Integer.class, 1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
-        return  response_entity.getBody();
+        return response_entity.getBody();
 
 
     }
@@ -54,17 +50,15 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_location_menus_reservation";
-//        System.out.println(url);
 
-        HttpEntity<Remote_Put_location_Menus_Reservation_DTO> requestEntity = new HttpEntity<>(data,headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update_remote, HttpMethod.PUT, requestEntity, Boolean.class);
+
+        HttpEntity<Remote_Put_location_Menus_Reservation_DTO> requestEntity = new HttpEntity<>(data, headers);
+        ResponseEntity<Boolean> response_entity = restTemplate.exchange(url_update_remote, HttpMethod.PUT, requestEntity, Boolean.class);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
-        return  response_entity.getBody();
+        return response_entity.getBody();
 
     }
-
 
 
     public boolean remote_put_menus_reservation(String code) {
@@ -72,22 +66,14 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/put/remote_update_menus_reservation/"+code;
-//        System.out.println(url);
-//        url_update = url_update+code;
+
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_update+code, HttpMethod.PUT, requestEntity, Boolean.class);
+        ResponseEntity<Boolean> response_entity = restTemplate.exchange(url_update + code, HttpMethod.PUT, requestEntity, Boolean.class);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
-        return  response_entity.getBody();
+        return response_entity.getBody();
 
     }
-
-
-
-
-
-
 
 
     public boolean remote_delete_location_menus_reservation(String code) {
@@ -95,19 +81,13 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_location_menus_reservation/"+code;
-//        System.out.println(url);
-//        url_delete_remote = url_delete_remote+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete_remote+code, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity = restTemplate.exchange(url_delete_remote + code, HttpMethod.DELETE, requestEntity, Boolean.class, 1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
-        return  response_entity.getBody();
+        return response_entity.getBody();
 
     }
-
-
-
 
 
     public boolean remote_delete_menus_reservation(String code) {
@@ -115,28 +95,22 @@ public class RemoteRequest {
         log.info("REMOTE REQUEST: ENTERED INTO THE CHECK_REMOTE_DATA");
         HttpHeaders headers = getHeaders();
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://${RESERVATION_SERVER:localhost}:8083/reservation/delete/remote_delete_menus_reservation/"+code;
-//        System.out.println(url);
-//        url_delete =url_delete+code;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Boolean> response_entity=restTemplate.exchange(url_delete+code, HttpMethod.DELETE, requestEntity,Boolean.class,1);
+        ResponseEntity<Boolean> response_entity = restTemplate.exchange(url_delete + code, HttpMethod.DELETE, requestEntity, Boolean.class, 1);
 
         log.debug("REMOTE REQUEST: EXITED FROM THE CHECK_REMOTE_DATA");
-        return  response_entity.getBody();
+        return response_entity.getBody();
 
     }
 
 
-
-
-    private HttpHeaders getHeaders()
-    {
+    private HttpHeaders getHeaders() {
         log.info("REMOTE REQUEST: Entered into the getHeaders");
-        String  credentials ="jose:jose@";
+        String credentials = "jose:jose@";
         String encodeCredential = new String(Base64.encodeBase64(credentials.getBytes()));
-        HttpHeaders header =new HttpHeaders();
+        HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
-        header.add("Authorization","Basic "+encodeCredential);
+        header.add("Authorization", "Basic " + encodeCredential);
         log.debug("REMOTE REQUEST: EXITED FROM THE getHeaders");
         return header;
     }

@@ -17,15 +17,14 @@ import java.util.List;
 
 @Service
 @Data
-//@AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsPrinciple implements UserDetails {
 
     private static final Logger log = LogManager.getLogger(UserDetailsPrinciple.class.getName());
 
     private User_Data_DB user_data_db;
-    UserDetailsPrinciple(User_Data_DB user_data_db)
-    {
+
+    UserDetailsPrinciple(User_Data_DB user_data_db) {
 
         log.info("UserDETAILPrinciple: Entered into the USER DETAILS principal");
         this.user_data_db = user_data_db;
@@ -35,8 +34,7 @@ public class UserDetailsPrinciple implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_"+user_data_db.getUserroll()));
-        System.out.println(roles);
+        roles.add(new SimpleGrantedAuthority("ROLE_" + user_data_db.getUserroll()));
         return roles;
     }
 

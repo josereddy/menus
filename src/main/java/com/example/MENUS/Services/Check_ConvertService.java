@@ -35,8 +35,6 @@ public class Check_ConvertService {
     private SequenceGeneratorService seq_service;
 
 
-
-
 //////////////////////////////////////checking valid data
 
 
@@ -45,23 +43,19 @@ public class Check_ConvertService {
 
 
         if (menus_post_dto.getRestaurant_code() == null || menus_post_dto.getRestaurant_name() == null ||
-                menus_post_dto.getItems() == null|| menus_post_dto.getOpenhours()==null||menus_post_dto.getRestaurant_type()==null)
+                menus_post_dto.getItems() == null || menus_post_dto.getOpenhours() == null || menus_post_dto.getRestaurant_type() == null)
             return false;
-        if(check_open_hour_pattern(menus_post_dto.getOpenhours()))
-        {
+        if (check_open_hour_pattern(menus_post_dto.getOpenhours())) {
             log.info("CHECK_CONVERT_SERVICE: Successfully Exited MENU Data check Service");
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
 
-
-///////checking valid open_hours
-    public boolean check_open_hour_pattern(OpenHours openHours)
-    {
+    ///////checking valid open_hours
+    public boolean check_open_hour_pattern(OpenHours openHours) {
         log.info("CHECK_SERVICE:ENTERED INTO THE OPEN HOURS CHECKING SERVICE ");
-        String pattern="[0-2][0-9](\\:)[03][0](\\-)[0-2][0-9](\\:)[03][0]";
+        String pattern = "[0-2][0-9](\\:)[03][0](\\-)[0-2][0-9](\\:)[03][0]";
         List<String> dayhours = new ArrayList();
         dayhours.add(openHours.getSunday());
         dayhours.add(openHours.getMonday());
@@ -70,48 +64,38 @@ public class Check_ConvertService {
         dayhours.add(openHours.getThursday());
         dayhours.add(openHours.getFriday());
         dayhours.add(openHours.getSaturday());
-        for(String day_openhours:dayhours) {
+        for (String day_openhours : dayhours) {
 
-                    Pattern p1 =Pattern.compile(pattern);
-                    Matcher m1=p1.matcher(day_openhours);
-                    if(!(day_openhours.equals("closed")))
-                        if(m1.find())
-                    {
-                        Pattern p2=Pattern.compile("\\-");
-                        String[] timers =p2.split(m1.group());
-                        if((timers[0].compareTo(timers[1]))<0){
-                            Pattern p3 = Pattern.compile("[01][0-9]:[03][0]");
-                            Pattern p4 =Pattern.compile("[2][0-3]:[03][0]");
-                            Matcher m2 = p3.matcher(timers[0]);
-                            Matcher m3 = p3.matcher(timers[1]);
-                            if(!(m2.find())){
-                                Matcher m4 = p4.matcher(timers[0]);
-                                if(!(m4.find()))
-                                    throw  new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30");
-                            }
-                            if(!(m3.find()))
-                            {
-
-                                Matcher m5 = p4.matcher(timers[1]);
-                                if(!(m5.find()))
-                                    throw  new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30 invalid time format exception");
-                            }
+            Pattern p1 = Pattern.compile(pattern);
+            Matcher m1 = p1.matcher(day_openhours);
+            if (!(day_openhours.equals("closed")))
+                if (m1.find()) {
+                    Pattern p2 = Pattern.compile("\\-");
+                    String[] timers = p2.split(m1.group());
+                    if ((timers[0].compareTo(timers[1])) < 0) {
+                        Pattern p3 = Pattern.compile("[01][0-9]:[03][0]");
+                        Pattern p4 = Pattern.compile("[2][0-3]:[03][0]");
+                        Matcher m2 = p3.matcher(timers[0]);
+                        Matcher m3 = p3.matcher(timers[1]);
+                        if (!(m2.find())) {
+                            Matcher m4 = p4.matcher(timers[0]);
+                            if (!(m4.find()))
+                                throw new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30");
                         }
-                        else
-                           throw  new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30 and must be in a half hour time interval");
-                                              }
-                    else
+                        if (!(m3.find())) {
+
+                            Matcher m5 = p4.matcher(timers[1]);
+                            if (!(m5.find()))
+                                throw new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30 invalid time format exception");
+                        }
+                    } else
                         throw new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30 and must be in a half hour time interval");
+                } else
+                    throw new InvalidTimeFormatException("Please check all time formats are 24hrs ex:00:00-23:30 and must be in a half hour time interval");
         }
 
-            return true;
+        return true;
     }
-
-
-
-
-
-
 
 
     ////////////////////////////////Dto Document converter

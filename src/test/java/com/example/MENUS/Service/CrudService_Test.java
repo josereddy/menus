@@ -12,7 +12,8 @@ import com.example.MENUS.Services.RemoteRequest;
 import com.example.MENUS.Services.SequenceGeneratorService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import  static org.mockito.BDDMockito.*;
+
+import static org.mockito.BDDMockito.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -42,25 +43,21 @@ public class CrudService_Test {
     private CrudServices crudService;
 
 
-
     List<Items> items_list = new ArrayList<Items>();
-    private  Menus_MDB menus_mdb= new Menus_MDB();
+    private Menus_MDB menus_mdb = new Menus_MDB();
 
     @BeforeEach
-    public void setup_data()
-    {
+    public void setup_data() {
 
-        items_list.add(new Items("Cicken","parrota"));
+        items_list.add(new Items("Cicken", "parrota"));
         menus_mdb.setId(1l);
         menus_mdb.setRestaurantcode("usa-test-1000");
         menus_mdb.setRestaurantname("usa-test-chicken");
         menus_mdb.setItems(items_list);
         menus_mdb.setRestauranttype("veg");
-        menus_mdb.setOpenhours(new OpenHours("10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00","10:00-12:00"));
+        menus_mdb.setOpenhours(new OpenHours("10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00", "10:00-12:00"));
 
     }
-
-
 
 
 //    //////////////delete
@@ -84,9 +81,8 @@ public class CrudService_Test {
 
 
         // then - verify the result or output using assert statements
-         assertThat(response).isTrue();
+        assertThat(response).isTrue();
     }
-
 
 
 }

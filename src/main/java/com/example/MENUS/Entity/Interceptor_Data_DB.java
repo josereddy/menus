@@ -15,7 +15,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 public class Interceptor_Data_DB {
     @Id

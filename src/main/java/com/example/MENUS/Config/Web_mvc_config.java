@@ -38,8 +38,7 @@ public class Web_mvc_config implements WebMvcConfigurer {
 
 
     @Bean
-    public OpenAPI openapi()
-    {
+    public OpenAPI openapi() {
 
 
         Contact email;
@@ -48,15 +47,12 @@ public class Web_mvc_config implements WebMvcConfigurer {
                         .title("TEXAS_HAMBURGER")
                         .version("1.0.0")
                         .description("Adds Location Details")
-                         .contact(new io.swagger.v3.oas.models.info.Contact().name("Josephvijaykumarreddy Avula").email("jose737vijay@gmail.com"))
-
+                        .contact(new io.swagger.v3.oas.models.info.Contact().name("Josephvijaykumarreddy Avula").email("jose737vijay@gmail.com"))
 
 
                 );
 
     }
-
-
 
 
 }

@@ -5,10 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Menus_Repository extends MongoRepository<Menus_MDB,Long> {
+public interface Menus_Repository extends MongoRepository<Menus_MDB, Long> {
     Menus_MDB findByRestaurantcode(String val);
-//
-//    Menus_MDB findByRestaurantname(String val);
-//
-//    Menus_MDB findByRestauranttype(String val);
+
 }

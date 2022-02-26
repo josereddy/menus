@@ -13,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Transient;
 import java.util.List;
 
-@Document(collection="MENUS")
+@Document(collection = "MENUS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +28,7 @@ public class Menus_MDB {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Indexed(unique=true)
+    @Indexed(unique = true)
     private String restaurantcode;
 
     private String restaurantname;
